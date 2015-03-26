@@ -581,8 +581,8 @@ sub _page_bute {
                 $ctx->stash('FirstContents', $output);
                 $ctx->stash('FirstFileName', $file);
             } else {
-                            $fmgr->put_data($output,"${file}.new");
-                            $fmgr->rename("${file}.new",$file);
+                            defined($fmgr->put_data($output,"${file}.new")) or warn $fmgr->errstr;
+                            defined($fmgr->rename("${file}.new",$file)) or warn $fmgr->errstr;
                         }
 
             $output_page_contents = '';
@@ -613,8 +613,8 @@ sub _repage_bute {
 
     my $blog = $ctx->stash('blog');
     my $fmgr = $blog->file_mgr;
-    $fmgr->put_data($contents,"${file}.new");
-    $fmgr->rename("${file}.new",$file);
+    defined($fmgr->put_data($contents,"${file}.new")) or warn $fmgr->errstr;
+    defined($fmgr->rename("${file}.new",$file)) or warn $fmgr->errstr;
 
     $ctx->stash('FirstFileName',0);
 }
