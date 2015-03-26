@@ -581,6 +581,11 @@ sub _page_bute {
                 $ctx->stash('FirstContents', $output);
                 $ctx->stash('FirstFileName', $file);
             } else {
+                            my $path = dirname($file);
+                            $path =~ s/\/$// unless $path eq '/';
+                            unless($fmgr->exists($path)) {
+                                defined($fmgr->mkpath($path)) or warn $fmgr->errstr;
+                            }
                             defined($fmgr->put_data($output,"${file}.new")) or warn $fmgr->errstr;
                             defined($fmgr->rename("${file}.new",$file)) or warn $fmgr->errstr;
                         }
